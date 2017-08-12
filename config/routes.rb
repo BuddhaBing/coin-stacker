@@ -1,5 +1,15 @@
 Rails.application.routes.draw do
   devise_for :users
-  root to: "investments#index"
+
+  devise_scope :user do
+    authenticated :user do
+      root "investments#index", as: :authenticated_root
+    end
+    unauthenticated do
+      root "devise/sessions#new", as: :unauthenticated_root
+    end
+  end
+
   resources :investments
+
 end
